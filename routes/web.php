@@ -23,6 +23,9 @@ Route::get('/register_route', [AuthController::class, 'registration']);
 Route::post('/register-user', [AuthController::class, 'registerUser']) ->name('register-user');
 Route::post('/login-user', [AuthController::class, 'loginUser'])->name('login-user');
 Route::get('/dashboard', [AuthController::class, 'dashboard'])->middleware('isLoggedIn');
+Route::get('/admin_page', [AuthController::class, 'adminView']);
+Route::get('/subadmin_page', [AuthController::class, 'subAdminView']);
+Route::get('/users_page', [AuthController::class, 'userView']);
 Route::get('/logout-user', [AuthController::class, 'logoutUser']);
-Auth::routes();
+
 

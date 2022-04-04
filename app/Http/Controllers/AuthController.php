@@ -49,7 +49,7 @@ class AuthController extends Controller
         $res = $user->save();
             if ($res){
                 //return $role = "Admin";
-                return view('admin.dashboard');
+                return redirect('admin_page');
             }else{ return back()->with('fail', 'Something wrong');
          }
         }else {
@@ -62,7 +62,7 @@ class AuthController extends Controller
             $res = $user->save();
             if ($res){
                 //return $role = "user";
-                return view('user.dashboard');
+                return redirect('users_page');
             }else{ return back()->with('fail', 'Something wrong');
         }}
 
@@ -100,20 +100,32 @@ class AuthController extends Controller
             return redirect('login_user');
         }
     }
-
-   protected function authenticated(Request $request, $user)
-   {
-    $uid =  $user->id;
-    $role= \DB::table('users_roles')
-        ->where('users_roles.uid','=',$uid)
-        ->join('roles', 'users_roles.rid', '=', 'roles.rid')
-        ->select('roles.name as name')
-        ->first();
-    if ($role->name=='admin') {
-        return redirect('/admindashbaord');
-    } elseif($role->name=='manager') {
-        return redirect('/managerdashbaord');
+    public function adminView()
+        {
+            return view('admin.dashboard');
+        }
+    public function subAdminView()
+    {
+        return view('admin.subadmin.dashboard');
     }
-   }
+    public function userView()
+    {
+        return view('user.dashboard');
+    }
+
+//    protected function authenticated(Request $request, $user)
+//    {
+//     $uid =  $user->id;
+//     $role= \DB::table('users_roles')
+//         ->where('users_roles.uid','=',$uid)
+//         ->join('roles', 'users_roles.rid', '=', 'roles.rid')
+//         ->select('roles.name as name')
+//         ->first();
+//     if ($role->name=='admin') {
+//         return redirect('/admindashbaord');
+//     } elseif($role->name=='manager') {
+//         return redirect('/managerdashbaord');
+//     }
+//    }
 
 }
