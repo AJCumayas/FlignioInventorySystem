@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
+use App\Permissions\HasPermissionsTrait;
 
 class User extends Model
 {
-    use HasApiTokens, HasFactory;
+    use HasApiTokens, HasFactory, HasPermissionsTrait;
 
     protected $fillable = [
         'employee_id',
@@ -16,6 +17,8 @@ class User extends Model
         'name',
         'email',
         'password',
+        'role_request',
+        'role_id'
     ];
     protected $hidden = [
         'password',

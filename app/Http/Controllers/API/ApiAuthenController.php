@@ -3,11 +3,10 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use app\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-class ApiAuthController extends Controller
+class ApiAuthenController
 {
     public function register(Request $request)
     {

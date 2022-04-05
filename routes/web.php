@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +28,14 @@ Route::get('/admin_page', [AuthController::class, 'adminView']);
 Route::get('/subadmin_page', [AuthController::class, 'subAdminView']);
 Route::get('/users_page', [AuthController::class, 'userView']);
 Route::get('/logout-user', [AuthController::class, 'logoutUser']);
+Route::get('/roles', [PermissionController::class, 'Permission']);
 
+Route::group(['middleware' => 'role:developer'], function() {
 
+    Route::get('/admin', function() {
+
+       return 'Welcome Admin';
+
+    });
+
+ });
