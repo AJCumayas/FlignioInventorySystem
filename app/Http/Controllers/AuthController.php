@@ -55,7 +55,7 @@ class AuthController extends Controller
 
         $admin_perm = Permission::where('slug', 'view-equipment')->first();
         $user->permissions()->attach($admin_perm);
-        $user->roles()->attach($admin_role);
+        //$user->role()->attach($admin_role);
         //dd($admin_role);
         $res = $user->save();//saving new model
             if ($res){
@@ -77,7 +77,7 @@ class AuthController extends Controller
                 ]);
                 //assign role
 
-            $user->roles()->attach($user_role);
+            //$user->role()->attach($user_role);
                 //dd($user->roles()->attach($admin_role));
                 //dd($user);
             $res = $user->save();
