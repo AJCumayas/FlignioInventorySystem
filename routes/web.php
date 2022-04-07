@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PermissionController;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,12 +30,8 @@ Route::get('/users_page', [AuthController::class, 'userView']);
 Route::get('/logout-user', [AuthController::class, 'logoutUser']);
 Route::get('/roles', [PermissionController::class, 'Permission']);
 
-Route::group(['middleware' => 'role:developer'], function() {
+///Route::resource('users', App\Http\Controllers\UserController::class);
+Route::get('/list_user', [UserController::class, 'index'])->name('index');
+Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
+Route::get('/update/{user}', [UserController::class, 'update'])->name('update');
 
-    Route::get('/admin', function() {
-
-       return 'Welcome Admin';
-
-    });
-
- });

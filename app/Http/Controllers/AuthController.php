@@ -27,28 +27,32 @@ class AuthController extends Controller
     {//validate the data inputted
         $request->validate([
             'employee_id' => 'required|unique:users',
-            'company_name' => 'required|in:Fligno,fligno',
+            'company_name' => 'required',
             'name' => 'required',
             'email' => 'required|email|unique:users',new FreeEmailValidation(),
             'password' => 'required|min:5',
+            'role_request' => 'exists:roles,name',
         ]);
 
         // database check from user table
         $dbCheck = DB::select('select * from users where id = ?', [1]);
         //first register would be assigned role as admin
         if ($dbCheck == null) {
-            //create acocunt to database
+            $admin_role = Role::where('id','1')->first();
+         //create acocunt to database
         $user = User::create([
         'employee_id' => $request['employee_id'],
         'company_name' => $request['company_name'],
         'name' => $request['name'],
         'email' => $request['email'],
         'password' => Hash::make($request['password']),
-        'role_request'=> '1'
+        'role_request'=> $request['role_request'],
+        'role_id' => $admin_role->id
         ]);
         //assign role to admin
-        $admin_role = Role::where('slug','admin')->first();
-        $admin_role->givePermissionsTo(['assign-roles','edit-product','view-equipment']);
+
+        $admin_perm = Permission::where('slug', 'view-equipment')->first();
+        $user->permissions()->attach($admin_perm);
         $user->roles()->attach($admin_role);
         //dd($admin_role);
         $res = $user->save();//saving new model
@@ -59,18 +63,18 @@ class AuthController extends Controller
          }
         }else {
             //once admin was already registered all new accounts will be assigned as user role
+            $user_role = Role::where('slug','user')->first();
             $user = User::create([
                 'employee_id' => $request['employee_id'],
                 'company_name' => $request['company_name'],
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
-                'role_request'=> '2',
+                'role_request'=> $request['role_request'],
+                'role_id' => $user_role->id,
                 ]);
                 //assign role
-            $user_role = Role::where('slug','user')->first();
-            $user_perm = Permission::where('slug', 'view-equipment')->first();
-            $user->permissions()->attach($user_perm);
+
             $user->roles()->attach($user_role);
                 //dd($user->roles()->attach($admin_role));
                 //dd($user);
@@ -123,7 +127,7 @@ class AuthController extends Controller
         }
     public function subAdminView()
     {
-        return view('admin.subadmin.dashboard');
+        return view('admin.subadmin.dashboa rd');
     }
     public function userView()
     {
@@ -133,9 +137,9 @@ class AuthController extends Controller
    protected function authenticated(Request $request, $user)
    {
     $uid =  $user->id;
-    $role= \DB::table('users_roles')
-        ->where('users_roles.user_id','=',$uid)
-        ->join('roles', 'users_roles.role_id', '=', 'roles.id')
+    $role= \DB::table('users')
+        ->where('users.id','=',$uid)
+        ->join('roles', 'users.role_id', '=', 'roles.id')
         ->select('roles.slug')
         ->first();
        // dd($role);

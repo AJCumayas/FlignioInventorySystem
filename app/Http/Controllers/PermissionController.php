@@ -41,19 +41,19 @@ class PermissionController extends Controller
 
 		$assignRoles = new Permission();
 		$assignRoles->slug = 'assign-roles';
-		$assignRoles->name = 'Assign Roles';
+		//$assignRoles->name = 'Assign Roles';
 		$assignRoles->save();
 		$assignRoles->roles()->attach($admin_role);
 
 		$editProduct = new Permission();
 		$editProduct->slug = 'edit-product';
-		$editProduct->name = 'Edit Product';
+		//$editProduct->name = 'Edit Product';
 		$editProduct->save();
 		$editProduct->roles()->attach($sub_role);
 
         $viewEquipment = new Permission();
 		$viewEquipment->slug = 'view-equipment';
-		$viewEquipment->name = 'View Equipments';
+		///$viewEquipment->name = 'View Equipments';
 		$viewEquipment->save();
 		$viewEquipment->roles()->attach($user_role);
 

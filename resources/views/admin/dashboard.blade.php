@@ -15,6 +15,7 @@
                     @endif
 
                     {{ __('Welcome Admin! You are logged in!') }}
+                    <a href = 'list_user'> USER MANAGEMENT</a>
                 </div>
             </div>
         </div>

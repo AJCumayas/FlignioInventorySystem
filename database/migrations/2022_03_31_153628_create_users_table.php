@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('role_request')->nullable();
-          //  $table->foreignIdFor(Role::class)->onDelete('cascade');
+            $table->unsignedInteger('role_id');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+           // $table->foreignIdFor(Role::class)->onDelete('cascade')->constrained();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

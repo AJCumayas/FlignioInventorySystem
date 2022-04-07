@@ -14,6 +14,10 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
+        $permissions = [
+
+
+        ];
         $assignRoles = new Permission();
         $assignRoles->name = 'Assign Roles';
 		$assignRoles->slug = 'assign-roles';
