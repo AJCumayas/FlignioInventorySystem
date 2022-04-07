@@ -16,7 +16,6 @@ class UserController extends Controller
      */
     public function index()
     {
-  //  $users = user()->paginate(10);
     $users = User::with('role')->paginate(10);
     return view('user.index', ['users' => $users]);
     // return view('user.index',['users'=> DB::table('users', 'roles')->paginate(10)]);
@@ -60,15 +59,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
 
-        if(!$user =  User::whereId($id)->first()){
+        $role = Role::all();
+        return view('user.edit')->with([
+            'roles' => $role,
+            'user'  => $user
+        ]);
+    //     if(!$user =  User::whereId($id)->first()){
 
-            return back()->with('error','User Not Found');
-        }
+    //         return back()->with('error','User Not Found');
+    //     }
+    //     $users = User::whereId($id)->first();
+    //     $roles = DB::select('select * from roles');
+    //    // dd($roles);
+    //     return view('user.edit', ['user' => $users, 'role' => $roles]);
 
-        return view('user.edit');
     }
 
     /**
@@ -78,25 +85,22 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
         $request->validate([
-            'employee_id' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
-            'role_request' => 'exists:roles,name',
+            'role_id' => 'required|exists:roles,id',
         ]);
         $user_update = User::whereId($user->id)->update([
-            'employee_id' => $request->employee_id,
-            'email' => $request->email,
-            'role_request' => $request->role_request,
+            'role_id' => $request->role_id,
         ]);
+       // dd($user_update);
+        //DB::table('users_roles')->where('user_id', $user->id)->delete();
 
-        DB::table('users_roles')->where('user_id', $user->id)->delete();
+        //$user->assignRole($user->role_id);
 
-        $user->assignRole($user->role_request);
+        //DB::commit();
 
-        DB::commit();
-        return redirect('edit', ['user' => $user->id])->route('user.index')->with('success', 'User Updated Success');
+        return redirect('list_user');
     }
 
     /**

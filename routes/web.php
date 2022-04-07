@@ -33,5 +33,5 @@ Route::get('/roles', [PermissionController::class, 'Permission']);
 ///Route::resource('users', App\Http\Controllers\UserController::class);
 Route::get('/list_user', [UserController::class, 'index'])->name('index');
 Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
-Route::get('/update/{user}', [UserController::class, 'update'])->name('update');
+Route::put('/update/{user}', [UserController::class, 'update'])->name('update');
 

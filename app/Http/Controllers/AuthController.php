@@ -29,7 +29,7 @@ class AuthController extends Controller
             'employee_id' => 'required|unique:users',
             'company_name' => 'required',
             'name' => 'required',
-            'email' => 'required|email|unique:users',new FreeEmailValidation(),
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:5',
             'role_request' => 'exists:roles,name',
         ]);
@@ -38,7 +38,8 @@ class AuthController extends Controller
         $dbCheck = DB::select('select * from users where id = ?', [1]);
         //first register would be assigned role as admin
         if ($dbCheck == null) {
-            $admin_role = Role::where('id','1')->first();
+
+        $admin_role = Role::where('id','1')->first();
          //create acocunt to database
         $user = User::create([
         'employee_id' => $request['employee_id'],
@@ -49,6 +50,7 @@ class AuthController extends Controller
         'role_request'=> $request['role_request'],
         'role_id' => $admin_role->id
         ]);
+
         //assign role to admin
 
         $admin_perm = Permission::where('slug', 'view-equipment')->first();

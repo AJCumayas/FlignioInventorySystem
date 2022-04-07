@@ -22,16 +22,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               @foreach ($users as $user )
+                               @foreach ($users as $users )
                                    <tr>
-                                       <td>{{$user->id}}</td>
-                                       <td>{{$user->employee_id}}</td>
-                                       <td>{{$user->email}}</td>
-                                       <td>{{$user->role->slug}}</td>
+                                       <td>{{$users->id}}</td>
+                                       <td>{{$users->employee_id}}</td>
+                                       <td>{{$users->email}}</td>
+                                       <td>{{$users->role->slug}}</td>
                                        <td>
-                                            <a href="{{ route('edit', ['user' => $user->id]) }}"
+                                            <a href="{{ route('edit', ['user' => $users->id]) }}"
                                             class="btn btn-primary m-2">
-                                            <i class="fa fa-pen">edit</i>
+                                            <i class="fa fa-pen">Assign a Role</i>
                                         </a></td>
                                    </tr>
                                @endforeach

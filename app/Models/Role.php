@@ -16,9 +16,9 @@ class Role extends Model
 
     // ];
 
-    // public function permissions(){
-    //     return $this->belongsToMany(Permission::class, 'roles_permisiions');
-    // }
+    public function permissions(){
+        return $this->hasMany(Permission::class);
+    }
 
     // public function users()
     // {
