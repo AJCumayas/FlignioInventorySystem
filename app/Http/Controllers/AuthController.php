@@ -21,7 +21,8 @@ class AuthController extends Controller
 
     public function registration()
     {
-        return view("auth.register");
+        $role = Role::all();
+        return view("auth.register")->with(['roles' => $role]);
     }
     public function registerUser(Request $request)
     {//validate the data inputted
@@ -31,7 +32,7 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5',
-            'role_request' => 'exists:roles,name',
+            'role_request' => 'exists:roles,id',
         ]);
 
         // database check from user table
@@ -39,30 +40,30 @@ class AuthController extends Controller
         //first register would be assigned role as admin
         if ($dbCheck == null) {
 
-        $admin_role = Role::where('id','1')->first();
-         //create acocunt to database
-        $user = User::create([
-        'employee_id' => $request['employee_id'],
-        'company_name' => $request['company_name'],
-        'name' => $request['name'],
-        'email' => $request['email'],
-        'password' => Hash::make($request['password']),
-        'role_request'=> $request['role_request'],
-        'role_id' => $admin_role->id
-        ]);
+            $admin_role = Role::where('id','1')->first();
+            //create acocunt to database
+            $user = User::create([
+            'employee_id' => $request['employee_id'],
+            'company_name' => $request['company_name'],
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'role_request'=> $request['role_request'],
+            'role_id' => $admin_role->id
+            ]);
 
-        //assign role to admin
+            //assign role to admin
 
-        $admin_perm = Permission::where('slug', 'view-equipment')->first();
-        $user->permissions()->attach($admin_perm);
-        //$user->role()->attach($admin_role);
-        //dd($admin_role);
-        $res = $user->save();//saving new model
-            if ($res){
-                //return $role = "Admin";
-                return redirect('admin_page');
-            }else{ return back()->with('fail', 'Something wrong');
-         }
+            $admin_perm = Permission::where('slug', 'view-equipment')->first();
+            $user->permissions()->attach($admin_perm);
+            //$user->role()->attach($admin_role);
+            //dd($admin_role);
+            $res = $user->save();//saving new model
+                if ($res){
+                    //return $role = "Admin";
+                    return redirect('admin_page');
+                }else{ return back()->with('fail', 'Something wrong');
+            }
         }else {
             //once admin was already registered all new accounts will be assigned as user role
             $user_role = Role::where('slug','user')->first();
@@ -129,7 +130,7 @@ class AuthController extends Controller
         }
     public function subAdminView()
     {
-        return view('admin.subadmin.dashboa rd');
+        return view('admin.subadmin.dashboard');
     }
     public function userView()
     {

@@ -11,12 +11,13 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-fluid" id="myTable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Employee ID</th>
                                     <th>Email</th>
+                                    <th>Role Request</th>
                                     <th>Role</th>
                                     <th>Actions</th>
                                 </tr>
@@ -27,9 +28,10 @@
                                        <td>{{$users->id}}</td>
                                        <td>{{$users->employee_id}}</td>
                                        <td>{{$users->email}}</td>
+                                       <td>{{$users->role_request}}</td>
                                        <td>{{$users->role->slug}}</td>
                                        <td>
-                                            <a href="{{ route('edit', ['user' => $users->id]) }}"
+                                        <a href="{{ route('edit', ['user' => $users->id]) }}"
                                             class="btn btn-primary m-2">
                                             <i class="fa fa-pen">Assign a Role</i>
                                         </a></td>
@@ -43,4 +45,9 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+    </script>
 @endsection

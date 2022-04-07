@@ -25,7 +25,7 @@ Route::post('/register-user', [AuthController::class, 'registerUser']) ->name('r
 Route::post('/login-user', [AuthController::class, 'loginUser'])->name('login-user');
 Route::get('/dashboard', [AuthController::class, 'dashboard'])->middleware('isLoggedIn');
 Route::get('/admin_page', [AuthController::class, 'adminView']);
-Route::get('/subadmin_page', [AuthController::class, 'subAdminView']);
+Route::get('/sub_admin_page', [AuthController::class, 'subAdminView']);
 Route::get('/users_page', [AuthController::class, 'userView']);
 Route::get('/logout-user', [AuthController::class, 'logoutUser']);
 Route::get('/roles', [PermissionController::class, 'Permission']);

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dash')
 
 @section('content')
 <div class="container">
@@ -43,6 +43,21 @@
                         <input type="email" class="form-control" placeholder="Enter Email Address" name="email" value="">
                         <span class="text-danger">
                             @error('email'){{$message}}@enderror
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for='role_request'> </label>
+                        <select class="form-control form-control-user @error('role_id') is-invalid @enderror" name="role_id">
+                            <option selected disabled>Select Role Request</option>
+                            @foreach ($roles as $role)
+                                <option value="{{$role->name}}">
+                                    {{$role->name}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <span class="text-danger">
+                            @error('role_request'){{$message}}@enderror
                         </span>
                     </div>
 
