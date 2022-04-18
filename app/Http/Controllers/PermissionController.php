@@ -12,7 +12,8 @@ class PermissionController extends Controller
 
     public function Permission(Request $request)
     {
-    	$admin_permission = Permission::where('slug','assign-roles')->first();
+    	$admin_permission = Permission::all();
+       // dd($admin_permission);
         $sub_permission = Permission::where('slug', 'edit-product')->first();
 		$user_permission = Permission::where('slug', 'view-equipment')->first();
 
@@ -21,19 +22,19 @@ class PermissionController extends Controller
 		$admin_role->slug = 'admin';
 		$admin_role->name = 'Super Administrator';
 		$admin_role->save();
-		$admin_role->permissions()->attach($admin_permission);
+		$admin_role->permissions()->match($admin_permission);
 
 		$sub_role = new Role();
 		$sub_role->slug = 'sub-admin';
 		$sub_role->name = 'Assistant Administrator';
 		$sub_role->save();
-		$sub_role->permissions()->attach($sub_permission);
+		$sub_role->permissions()->match($sub_permission);
 
         $user_role = new Role();
 		$user_role->slug = 'user';
 		$user_role->name = 'Employee';
 		$user_role->save();
-		$user_role->permissions()->attach($user_permission);
+		$user_role->permissions()->match($user_permission);
 
 		$admin_role = Role::where('slug','admin')->first();
 		$sub_role = Role::where('slug', 'sub-admin')->first();
@@ -43,20 +44,25 @@ class PermissionController extends Controller
 		$assignRoles->slug = 'assign-roles';
 		//$assignRoles->name = 'Assign Roles';
 		$assignRoles->save();
-		$assignRoles->roles()->attach($admin_role);
+		$assignRoles->roles()->match($admin_role);
 
 		$editProduct = new Permission();
 		$editProduct->slug = 'edit-product';
 		//$editProduct->name = 'Edit Product';
 		$editProduct->save();
-		$editProduct->roles()->attach($sub_role);
+		$editProduct->roles()->match($sub_role);
 
         $viewEquipment = new Permission();
 		$viewEquipment->slug = 'view-equipment';
 		///$viewEquipment->name = 'View Equipments';
 		$viewEquipment->save();
-		$viewEquipment->roles()->attach($user_role);
+		$viewEquipment->roles()->match($user_role);
 
+        $viewEquipment = new Permission();
+		$viewEquipment->slug = 'equipment';
+		///$viewEquipment->name = 'View Equipments';
+		$viewEquipment->save();
+		$viewEquipment->roles()->macth($user_role);
 
 
         // $admin_role = Role::where('slug','admin')->first();

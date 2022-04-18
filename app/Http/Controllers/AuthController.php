@@ -14,9 +14,13 @@ use DB;
 
 class AuthController extends Controller
 {
-    public function loginView()
+    public function loginView(Request $request)
     {
+        if(Session::has('loginId')){
         return view("auth.loginPage");
+        }else{
+            return view("auth.loginPage");
+        }
     }
 
     public function registration()
@@ -24,15 +28,19 @@ class AuthController extends Controller
         $role = Role::all();
         return view("auth.register")->with(['roles' => $role]);
     }
+
     public function registerUser(Request $request)
     {//validate the data inputted
         $request->validate([
             'employee_id' => 'required|unique:users',
             'company_name' => 'required',
-            'name' => 'required',
+            'last_name' => 'required',
+            'first_name' => 'required',
+            'middle_name' => 'required',
+            'suffix' => '',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5',
-            'role_request' => 'exists:roles,id',
+            'role_request' => 'exists:roles,name',
         ]);
 
         // database check from user table
@@ -45,23 +53,25 @@ class AuthController extends Controller
             $user = User::create([
             'employee_id' => $request['employee_id'],
             'company_name' => $request['company_name'],
-            'name' => $request['name'],
+            'last_name' => $request['last_name'],
+            'first_name' => $request['first_name'],
+            'middle_name' => $request['middle_name'],
+            'suffix' => $request['suffix'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
-            'role_request'=> $request['role_request'],
+            'role_request'=> $request->role_request,
             'role_id' => $admin_role->id
             ]);
 
             //assign role to admin
-
-            $admin_perm = Permission::where('slug', 'view-equipment')->first();
-            $user->permissions()->attach($admin_perm);
+            // $admin_perm = Permission::where('slug', 'view-equipment')->first();
+            // $user->permissions()->attach($admin_perm);
             //$user->role()->attach($admin_role);
             //dd($admin_role);
             $res = $user->save();//saving new model
                 if ($res){
                     //return $role = "Admin";
-                    return redirect('admin_page');
+                    return redirect('admin_page')->with('Sucess', 'Registered Successfully');
                 }else{ return back()->with('fail', 'Something wrong');
             }
         }else {
@@ -70,21 +80,21 @@ class AuthController extends Controller
             $user = User::create([
                 'employee_id' => $request['employee_id'],
                 'company_name' => $request['company_name'],
-                'name' => $request['name'],
+                'last_name' => $request['last_name'],
+                'first_name' => $request['first_name'],
+                'middle_name' => $request['middle_name'],
+                'suffix' => $request['suffix'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
-                'role_request'=> $request['role_request'],
-                'role_id' => $user_role->id,
+                'role_request'=> $request->role_request,
+                'role_id' => $user_role->id
                 ]);
                 //assign role
 
-            //$user->role()->attach($user_role);
-                //dd($user->roles()->attach($admin_role));
-                //dd($user);
             $res = $user->save();
             if ($res){
                 //return $role = "user";
-                return redirect('users_page');
+                return redirect('login_user')->with('success', 'Registered Successfully');
             }else{ return back()->with('fail', 'Something wrong');
         }}
 
@@ -94,7 +104,7 @@ class AuthController extends Controller
 
     public function loginUser(Request $request)
     {//validate the credentials inputted
-        $request->validate([
+            $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:5',
         ]);

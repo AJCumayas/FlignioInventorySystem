@@ -15,7 +15,10 @@ class User extends Model
     protected $fillable = [
         'employee_id',
         'company_name',
-        'name',
+        'last_name',
+        'first_name',
+        'middle_name',
+        'suffix',
         'email',
         'password',
         'role_request',
@@ -30,6 +33,10 @@ class User extends Model
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+    public function permissions()
+    {
+        return $this->belongsTo(User::class);
     }
 
     // public function role()

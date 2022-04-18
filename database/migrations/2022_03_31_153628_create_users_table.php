@@ -18,7 +18,10 @@ return new class extends Migration
             $table->increments('id');
             $table->string('employee_id')->unique();
             $table->string('company_name');
-            $table->string('name');
+            $table->string('last_name');
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('suffix')->nullable();
             $table->string('email')->unique();
             $table->string('role_request')->nullable();
             $table->unsignedInteger('role_id');

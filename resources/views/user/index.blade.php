@@ -1,4 +1,5 @@
 @extends('layouts.dash')
+@include('common.alert')
 
 @section('content')
 <div class="container">
