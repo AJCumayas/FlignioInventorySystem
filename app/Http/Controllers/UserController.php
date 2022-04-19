@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use DB;
 use App\Models\Role;
+use App\Models\Requests;
 
 class UserController extends Controller
 {
@@ -17,9 +18,20 @@ class UserController extends Controller
     public function index()
     {
     $users = User::with('role')->paginate();
+
     return view('user.index', ['users' => $users]);
-    // return view('user.index',['users'=> DB::table('users', 'roles')->paginate(10)]);
     }
+
+    public function requests()
+    {
+    $user = Requests::with('role')->paginate();
+
+    return view('user.request', ['requests' => $user]);
+
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -67,17 +79,39 @@ class UserController extends Controller
             'roles' => $role,
             'user'  => $user
         ]);
-    //     if(!$user =  User::whereId($id)->first()){
-
-    //         return back()->with('error','User Not Found');
-    //     }
-    //     $users = User::whereId($id)->first();
-    //     $roles = DB::select('select * from roles');
-    //    // dd($roles);
-    //     return view('user.edit', ['user' => $users, 'role' => $roles]);
 
     }
 
+    public function approve(Requests $requests)
+    {
+      $user = User::create([
+            'employee_id' => $requests->employee_id,
+            'company_name' =>$requests->company_name,
+            'last_name' => $requests->last_name,
+            'first_name' => $requests->first_name,
+            'middle_name' => $requests->middle_name,
+            'suffix' => $requests->suffix,
+            'email' =>$requests->email,
+            'password' =>$requests->password,
+            'role_request'=> $requests->role_request,
+            'role_id' => $requests->role_id,
+        ]);
+
+        $res = $user->save();
+
+        if ($res){
+            $requests->delete();
+            return redirect('list_requests')->withMessage('User approved successfully');
+        }else{ return back()->with('fail', 'Something wrong');
+
+    }
+}
+
+public function disapprove(Requests $requests)
+    {
+        $requests->delete();
+        return redirect('list_requests')->withMessage('User has been disapproved!');
+    }
     /**
      * Update the specified resource in storage.
      *

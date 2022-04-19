@@ -16,9 +16,9 @@
 
                     {{ __('Welcome Fligno Inventory') }}
                     <br>
-                    <a href="login_user">Login</a>
+                    <a href="viewlogin_user">Login</a>
                     <br>
-                    <a href="register_route">Register</a>
+                    <a href="checkregister_route">Register</a>
                 </div>
             </div>
         </div>

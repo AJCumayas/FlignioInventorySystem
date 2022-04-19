@@ -8,7 +8,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Permissions\HasPermissionsTrait;
 
 
-class User extends Model
+class Requests extends Model
 {
     use HasApiTokens, HasFactory, HasPermissionsTrait;
 
@@ -35,16 +35,5 @@ class User extends Model
         return $this->belongsTo(Role::class);
     }
 
-    // public function role()
-    // {
-    //     return $this->hasOne(Role::class);
-    // }
-    // public function role()
-    // {
-    //     return $this->hasOne(Role::class, 'id', 'role_id');
-    // }
-    // public function permissions(){
-    //     return $this->belongsToMany(Permission::class, 'users_permissions');
-    // }
 
 }

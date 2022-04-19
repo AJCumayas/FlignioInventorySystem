@@ -19,7 +19,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login_user', [AuthController::class, 'loginView']);
+Route::get('/viewlogin_user', [AuthController::class, 'loginView'])->name('viewlogin_user');
+Route::get('/checkregister_route', [AuthController::class, 'registration_fcheck']);
 Route::get('/register_route', [AuthController::class, 'registration']);
 Route::post('/register-user', [AuthController::class, 'registerUser']) ->name('register-user');
 Route::post('/login-user', [AuthController::class, 'loginUser'])->name('login-user');
@@ -29,9 +30,13 @@ Route::get('/sub_admin_page', [AuthController::class, 'subAdminView']);
 Route::get('/users_page', [AuthController::class, 'userView']);
 Route::get('/logout-user', [AuthController::class, 'logoutUser']);
 Route::get('/roles', [PermissionController::class, 'Permission']);
+Route::get('/approval',  [AuthController::class, 'approval'])->name('approval');
 
 ///Route::resource('users', App\Http\Controllers\UserController::class);
 Route::get('/list_user', [UserController::class, 'index'])->name('index');
 Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
+Route::get('/list_requests', [UserController::class, 'requests'])->name('requests');
+Route::get('/approve/{requests}', [UserController::class, 'approve'])->name('approve');
+Route::get('/disapprove/{requests}', [UserController::class, 'disapprove'])->name('disapprove');
 Route::put('/update/{user}', [UserController::class, 'update'])->name('update');
 

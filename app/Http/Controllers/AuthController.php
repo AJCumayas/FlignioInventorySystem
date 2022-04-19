@@ -7,6 +7,7 @@ use App\Rules\FreeEmailValidation;
 use Illuminate\Support\Facades\Hash;
 use App\Permissions\HasPermissionsTrait;
 use App\Models\User;
+use App\Models\Requests;
 use App\Models\Permission;
 use App\Models\Role;
 use Session;
@@ -16,81 +17,124 @@ class AuthController extends Controller
 {
     public function loginView()
     {
-        return view("auth.loginPage");
+        //If user tries to log in:
+
+        $dbCheck = DB::select('select * from users where id = ?', [1]);
+        if ($dbCheck == null) //If db is empty
+        {
+            return view("auth.firstPage"); //warning to register as superadmin
+
+        }
+        else{
+
+            return view("auth.loginPage");
+        }
+    }
+
+    public function registration_fcheck()
+    {
+
+        //user tries to register
+        $role = Role::all();
+        $dbCheck = DB::select('select * from users where id = ?', [1]);
+       if ($dbCheck == null) //DB is empty
+        {
+            return view("auth.firstPage"); //Register automatically s superadmin
+        }
+        else{
+
+            return view("auth.register")->with(['roles' => $role]);
+        }
     }
 
     public function registration()
     {
-        $role = Role::all();
-        return view("auth.register")->with(['roles' => $role]);
+       $role = Role::all();
+       return view("auth.register")->with(['roles' => $role]);
     }
+
+
     public function registerUser(Request $request)
-    {//validate the data inputted
+    {
+        //validate the data inputted
         $request->validate([
             'employee_id' => 'required|unique:users',
             'company_name' => 'required',
-            'name' => 'required',
+            'last_name' => 'required',
+            'first_name' => 'required',
+            'middle_name' => 'required',
+            'suffix' => '',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5',
-            'role_request' => 'exists:roles,id',
+            'confirm_password' => 'required|same:password|min:5',
+            'role_request' => 'exists:roles,name',
         ]);
 
-        // database check from user table
-        $dbCheck = DB::select('select * from users where id = ?', [1]);
-        //first register would be assigned role as admin
-        if ($dbCheck == null) {
+                // database check from user table
+            $dbCheck = DB::select('select * from users where id = ?', [1]);
+
+              //first register would be assigned role as admin
+            if ($dbCheck == null) {
 
             $admin_role = Role::where('id','1')->first();
             //create acocunt to database
             $user = User::create([
-            'employee_id' => $request['employee_id'],
-            'company_name' => $request['company_name'],
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
-            'role_request'=> $request['role_request'],
-            'role_id' => $admin_role->id
+                'employee_id' => $request['employee_id'],
+                'company_name' => $request['company_name'],
+                'last_name' => $request['last_name'],
+                'first_name' => $request['first_name'],
+                'middle_name' => $request['middle_name'],
+                'suffix' => $request['suffix'],
+                'email' => $request['email'],
+                'password' => Hash::make($request['password']),
+                'role_request'=> $request->role_request,
+                'role_id' => $admin_role->id
             ]);
 
-            //assign role to admin
-
-            $admin_perm = Permission::where('slug', 'view-equipment')->first();
-            $user->permissions()->attach($admin_perm);
-            //$user->role()->attach($admin_role);
-            //dd($admin_role);
             $res = $user->save();//saving new model
                 if ($res){
-                    //return $role = "Admin";
                     return redirect('admin_page');
                 }else{ return back()->with('fail', 'Something wrong');
             }
-        }else {
+        }
+
+        else {
             //once admin was already registered all new accounts will be assigned as user role
             $user_role = Role::where('slug','user')->first();
-            $user = User::create([
+            $user = Requests::create([
                 'employee_id' => $request['employee_id'],
                 'company_name' => $request['company_name'],
-                'name' => $request['name'],
+                'last_name' => $request['last_name'],
+                'first_name' => $request['first_name'],
+                'middle_name' => $request['middle_name'],
+                'suffix' => $request['suffix'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
-                'role_request'=> $request['role_request'],
-                'role_id' => $user_role->id,
+                'role_request'=> $request->role_request,
+                'role_id' => $user_role->id
                 ]);
-                //assign role
 
-            //$user->role()->attach($user_role);
-                //dd($user->roles()->attach($admin_role));
-                //dd($user);
             $res = $user->save();
             if ($res){
-                //return $role = "user";
-                return redirect('users_page');
+                return redirect('approval');
             }else{ return back()->with('fail', 'Something wrong');
         }}
 
 
     }//funcion end
 
+    public function approval()
+{
+     $role = Role::all();
+     $dbCheck = DB::select('select * from users where id = ?', [1]);
+       if ($dbCheck == null)
+       {
+          return redirect('/admin_page');
+       }
+         else{
+           return view("auth.approval");
+         }
+}
 
     public function loginUser(Request $request)
     {//validate the credentials inputted
@@ -154,16 +198,4 @@ class AuthController extends Controller
         return redirect('/users_page');
     }
    }
-//    $role= \DB::table('users_roles')
-//    ->where('user_id', $uid)
-//    ->join('roles', 'role_id', '=', 'roles.id')
-//    ->select('role_id')
-//    ->first();
-//   //dd($role);
-// if ($role->slug=='admin') {
-//    return redirect('/admin_page');
-// } elseif($role->slug=='user') {
-//    return redirect('/users_page');
-// }
-// }
 }

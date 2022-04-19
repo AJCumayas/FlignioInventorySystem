@@ -1,11 +1,11 @@
-@extends('layouts.dash')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header">{{ __('Welcome') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,9 +14,11 @@
                         </div>
                     @endif
 
-                    {{ __('Welcome Admin! You are logged in!') }}
-                    <a href = 'list_requests'> USER APPROVAL</a>
-                    <a href = 'list_user'> USER MANAGEMENT</a>
+                    {{ __('You are the first user. When you register, you will be the Super andmin of this System') }}
+                    <br>
+                    <a href="register_route">Register</a>
+                    <br>
+                    <a href="/">Cancel</a>
                 </div>
             </div>
         </div>

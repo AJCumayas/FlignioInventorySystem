@@ -17,45 +17,45 @@ class PermissionController extends Controller
 		$user_permission = Permission::where('slug', 'view-equipment')->first();
 
 		//RoleTableSeeder.php
-		$admin_role = new Role();
-		$admin_role->slug = 'admin';
-		$admin_role->name = 'Super Administrator';
-		$admin_role->save();
-		$admin_role->permissions()->attach($admin_permission);
+	//	$admin_role = new Role();
+	//	$admin_role->slug = 'admin';
+	//	$admin_role->name = 'Super Administrator';
+	//	$admin_role->save();
+	//	$admin_role->permissions()->attach($admin_permission);
 
-		$sub_role = new Role();
-		$sub_role->slug = 'sub-admin';
-		$sub_role->name = 'Assistant Administrator';
-		$sub_role->save();
-		$sub_role->permissions()->attach($sub_permission);
+	//	$sub_role = new Role();
+	//	$sub_role->slug = 'sub-admin';
+	//	$sub_role->name = 'Assistant Administrator';
+	//	$sub_role->save();
+	//	$sub_role->permissions()->attach($sub_permission);
 
-        $user_role = new Role();
-		$user_role->slug = 'user';
-		$user_role->name = 'Employee';
-		$user_role->save();
-		$user_role->permissions()->attach($user_permission);
+      //  $user_role = new Role();
+		//$user_role->slug = 'user';
+	//	$user_role->name = 'Employee';
+	//	$user_role->save();
+	//	$user_role->permissions()->attach($user_permission);
 
-		$admin_role = Role::where('slug','admin')->first();
-		$sub_role = Role::where('slug', 'sub-admin')->first();
-        $user_role = Role::where('slug', 'user')->first();
+	//	$admin_role = Role::where('slug','admin')->first();
+	//	$sub_role = Role::where('slug', 'sub-admin')->first();
+      //  $user_role = Role::where('slug', 'user')->first();
 
-		$assignRoles = new Permission();
-		$assignRoles->slug = 'assign-roles';
+	//	$assignRoles = new Permission();
+	//	$assignRoles->slug = 'assign-roles';
 		//$assignRoles->name = 'Assign Roles';
-		$assignRoles->save();
-		$assignRoles->roles()->attach($admin_role);
+	//	$assignRoles->save();
+	//	$assignRoles->roles()->attach($admin_role);
 
-		$editProduct = new Permission();
-		$editProduct->slug = 'edit-product';
+	//	$editProduct = new Permission();
+	//	$editProduct->slug = 'edit-product';
 		//$editProduct->name = 'Edit Product';
-		$editProduct->save();
-		$editProduct->roles()->attach($sub_role);
+	//	$editProduct->save();
+	//	$editProduct->roles()->attach($sub_role);
 
-        $viewEquipment = new Permission();
-		$viewEquipment->slug = 'view-equipment';
+      //  $viewEquipment = new Permission();
+		//$viewEquipment->slug = 'view-equipment';
 		///$viewEquipment->name = 'View Equipments';
-		$viewEquipment->save();
-		$viewEquipment->roles()->attach($user_role);
+	//	$viewEquipment->save();
+	//	$viewEquipment->roles()->attach($user_role);
 
 
 

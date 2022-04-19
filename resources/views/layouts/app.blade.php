@@ -30,21 +30,21 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href='login_user'>{{ __('Login') }} </a>
+                                    <a class="nav-link" href='viewlogin_user'>{{ __('Login') }} </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="register_route">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="checkregister_rout">{{ __('Register') }}</a>
                                 </li>
 
                     </ul>
 
-                </div>
+                </div> --}}
                 </div>
             </div>
         </nav>

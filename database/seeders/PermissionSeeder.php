@@ -7,33 +7,39 @@ use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+
     public function run()
     {
         $permissions = [
-
-
+            'user-list',
+            'user-create',
+            'user-edit',
+            'user-delete',
+            'role-create',
+            'role-edit',
+            'role-list',
+            'role-delete',
+            'permission-list',
+            'permission-create',
+            'permission-edit',
+            'permission-delete',
         ];
-        $assignRoles = new Permission();
-        $assignRoles->name = 'Assign Roles';
-		$assignRoles->slug = 'assign-roles';
-		$assignRoles->save();
-		//$assignRoles->roles()->attach($admin_role);
 
-		$editProduct = new Permission();
-        $editProduct->name = 'Edit Product';
-		$editProduct->slug = 'edit-product';
-		$editProduct->save();
-		//$editProduct->roles()->attach($sub_role);
+        foreach($permissions as $permission){
+            Permission::create([
+                'slug' => $permission
+            ]);
+        }
 
-        $viewEquipment = new Permission();
-        $viewEquipment->name = 'View Equipments';
-		$viewEquipment->slug = 'view-equipment';
-		$viewEquipment->save();
-		//$viewEquipment->roles()->attach($user_role);
+        // All Permissions
+        $permission_saved = Permission::pluck('id')->toArray();
+
+        // Give Role Admin All Access
+        $role = Role::whereId(1)->first();
+        //$role->permissions()->match($permissions);
+
+        // Admin Role Sync Permission
+        $user = User::where('role_id', 1)->first();
+      //  $user->permissions()->match($permissions);
     }
 }

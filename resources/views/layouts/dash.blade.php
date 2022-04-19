@@ -40,7 +40,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <li class="nav-item dropdown">
                         <form id = 'logout-form' action =  "logout-user" method = "GET">
@@ -53,7 +53,7 @@
                         </form>
                     </li>
 
-                </div>
+                </div> --}}
             </div>
 
         </nav>
