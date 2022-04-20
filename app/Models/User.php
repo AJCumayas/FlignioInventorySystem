@@ -34,6 +34,10 @@ class User extends Model
     {
         return $this->belongsTo(Role::class);
     }
+    public function permissions()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     // public function role()
     // {

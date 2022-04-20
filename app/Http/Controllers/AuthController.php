@@ -15,8 +15,9 @@ use DB;
 
 class AuthController extends Controller
 {
-    public function loginView()
+    public function loginView(Request $request)
     {
+<<<<<<< HEAD
         //If user tries to log in:
 
         $dbCheck = DB::select('select * from users where id = ?', [1]);
@@ -45,6 +46,13 @@ class AuthController extends Controller
 
             return view("auth.register")->with(['roles' => $role]);
         }
+=======
+        if(Session::has('loginId')){
+        return view("auth.loginPage");
+        }else{
+            return view("auth.loginPage");
+        }
+>>>>>>> 1d0aa242f5aab2c731fca08fa0362cb1845199cb
     }
 
     public function registration()
@@ -53,7 +61,10 @@ class AuthController extends Controller
        return view("auth.register")->with(['roles' => $role]);
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d0aa242f5aab2c731fca08fa0362cb1845199cb
     public function registerUser(Request $request)
     {
         //validate the data inputted
@@ -66,7 +77,10 @@ class AuthController extends Controller
             'suffix' => '',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5',
+<<<<<<< HEAD
             'confirm_password' => 'required|same:password|min:5',
+=======
+>>>>>>> 1d0aa242f5aab2c731fca08fa0362cb1845199cb
             'role_request' => 'exists:roles,name',
         ]);
 
@@ -79,6 +93,7 @@ class AuthController extends Controller
             $admin_role = Role::where('id','1')->first();
             //create acocunt to database
             $user = User::create([
+<<<<<<< HEAD
                 'employee_id' => $request['employee_id'],
                 'company_name' => $request['company_name'],
                 'last_name' => $request['last_name'],
@@ -94,6 +109,29 @@ class AuthController extends Controller
             $res = $user->save();//saving new model
                 if ($res){
                     return redirect('admin_page');
+=======
+            'employee_id' => $request['employee_id'],
+            'company_name' => $request['company_name'],
+            'last_name' => $request['last_name'],
+            'first_name' => $request['first_name'],
+            'middle_name' => $request['middle_name'],
+            'suffix' => $request['suffix'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'role_request'=> $request->role_request,
+            'role_id' => $admin_role->id
+            ]);
+
+            //assign role to admin
+            // $admin_perm = Permission::where('slug', 'view-equipment')->first();
+            // $user->permissions()->attach($admin_perm);
+            //$user->role()->attach($admin_role);
+            //dd($admin_role);
+            $res = $user->save();//saving new model
+                if ($res){
+                    //return $role = "Admin";
+                    return redirect('admin_page')->with('Sucess', 'Registered Successfully');
+>>>>>>> 1d0aa242f5aab2c731fca08fa0362cb1845199cb
                 }else{ return back()->with('fail', 'Something wrong');
             }
         }
@@ -116,7 +154,12 @@ class AuthController extends Controller
 
             $res = $user->save();
             if ($res){
+<<<<<<< HEAD
                 return redirect('approval');
+=======
+                //return $role = "user";
+                return redirect('login_user')->with('success', 'Registered Successfully');
+>>>>>>> 1d0aa242f5aab2c731fca08fa0362cb1845199cb
             }else{ return back()->with('fail', 'Something wrong');
         }}
 
@@ -138,7 +181,7 @@ class AuthController extends Controller
 
     public function loginUser(Request $request)
     {//validate the credentials inputted
-        $request->validate([
+            $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:5',
         ]);

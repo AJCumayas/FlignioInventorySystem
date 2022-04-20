@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Permission;
 use App\Models\Role;
-use App\Models\User;
 
 class RoleSeeder extends Seeder
 {
@@ -18,6 +16,7 @@ class RoleSeeder extends Seeder
     public function run()
     {
         Role::create([
+<<<<<<< HEAD
             'name' => 'Administrator',
             'slug' => 'admin',
         ]);
@@ -25,6 +24,20 @@ class RoleSeeder extends Seeder
         Role::create([
             'name' => 'Assistant Administrator',
             'slug' => 'sub-admin',
+=======
+            'name' => 'Super Administrator',
+            'slug' => 'admin'
+        ]);
+
+        Role::create([
+            'name' => 'Assistant Administrator',
+            'slug' => 'sub-admin'
+        ]);
+
+        Role::create([
+            'name' => 'Employee',
+            'slug' => 'user'
+>>>>>>> 1d0aa242f5aab2c731fca08fa0362cb1845199cb
         ]);
 
         Role::create([
